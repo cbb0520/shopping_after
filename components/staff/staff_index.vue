@@ -77,15 +77,15 @@
        <staff_add ref="stadd"></staff_add>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormadd = false">取 消</el-button>
-        <el-button type="primary" @click="staffadd">确 定</el-button>
+        <el-button type="primary" @click="staffadd">添加</el-button>
       </div>
     </el-dialog>
 
     <el-dialog title="编辑"  :visible.sync="dialogFormVisible">
-      <staff_update></staff_update>
+      <staff_update ref="stupda"></staff_update>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="update">确 定</el-button>
+        <el-button type="primary" @click="update">编辑</el-button>
       </div>
     </el-dialog>
   </div>
@@ -208,13 +208,20 @@
           var _this = this;
           var params = new URLSearchParams();
           params.append("eid",eid)
-          this.$axios.post("/queryByuId.action",params)
+          this.$axios.post("/queryByeId.action",params)
             /*{params:{name:_this.username,page:_this.pageindex,rows:5}})*/
             .then(function (result) {
               //异步成功，执行then里面的函数
               //result  结果  很多的响应信息
               //获取后端传递的json数据  result.data
-
+              _this.$refs.stupda.formStaffupdate.eid = result.data.eid
+              _this.$refs.stupda.formStaffupdate.account = result.data.account
+              _this.$refs.stupda.formStaffupdate.password = result.data.password
+              _this.$refs.stupda.formStaffupdate.name = result.data.name
+              _this.$refs.stupda.formStaffupdate.sex = result.data.sex
+              _this.$refs.stupda.formStaffupdate.phone = result.data.phone
+              _this.$refs.stupda.formStaffupdate.etiem = result.data.etiem
+              _this.$refs.stupda.formStaffupdate.address = result.data.address
 
             })
             .catch(function (error) {
@@ -226,13 +233,19 @@
           this.dialogFormVisible = false
           var _this = this;
           var params = new URLSearchParams();
-          this.$axios.post("updateUser.action", params)
+          params.append("eid",_this.$refs.stupda.formStaffupdate.eid)
+          params.append("password",this.$refs.stupda.formStaffupdate.password)
+          params.append("name", this.$refs.stupda.formStaffupdate.name)
+          params.append("sex", this.$refs.stupda.formStaffupdate.sex)
+          params.append("phone", this.$refs.stupda.formStaffupdate.phone)
+          params.append("etiem", this.$refs.stupda.formStaffupdate.etiem)
+          params.append("address", this.$refs.stupda.formStaffupdate.address)
+          this.$axios.post("updateStaff.action", params)
             /*{params:{name:_this.username,page:_this.pageindex,rows:5}})*/
             .then(function (result) {
               //异步成功，执行then里面的函数
               //result  结果  很多的响应信息
               //获取后端传递的json数据  result.data
-
               _this.$message({
                 message: result.data,
                 type: 'success'

@@ -101,13 +101,16 @@
             let newTabName = ++this.tabIndex + '';
             this.editableTabs.push({
               title: text,
-              name: newTabName,
+              name: text,
               content: url
 
             });
-            this.editableTabsValue = newTabName;
+            this.editableTabsValue = text;
+          }else {
+            this.editableTabsValue = text;
           }
-          console.log(text, url);
+
+
 
         },
         getdata: function () {

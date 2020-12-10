@@ -3,7 +3,7 @@
   <el-form :model="formStaffupdate">
 
     <el-form-item label="账户" :label-width="formLabelWidth">
-      <el-input v-model="formStaffupdate.account" autocomplete="off" placeholder="请输入账户"></el-input>
+      <el-input :disabled="true" v-model="formStaffupdate.account" autocomplete="off" placeholder="请输入账户"></el-input>
     </el-form-item>
     <el-form-item label="密码" :label-width="formLabelWidth">
       <el-input v-model="formStaffupdate.password" placeholder="请输入密码" autocomplete="off"  show-password></el-input>
@@ -55,6 +55,7 @@
       data () {
         return {
           formStaffupdate: {
+            eid:'',
             account:'',
             password: '',
             name: '',
