@@ -72,6 +72,8 @@
 </template>
 
 <script>
+  import Staff_index from "../components/staff/staff_index"
+
     export default {
         name: "index.vue",
       data () {
@@ -142,7 +144,7 @@
         },
       },
       components: { //子组件
-
+        staff_index:Staff_index
       },
       created(){
         this.getdata();
@@ -167,7 +169,7 @@
   .el-main {
     background-color: white;
     color: #333;
-    text-align: center;
+
     line-height: 40px;
   }
 
