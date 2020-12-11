@@ -73,6 +73,7 @@
 
 <script>
   import Staff_index from "../components/staff/staff_index"
+  import Role_index from "../components/role/role_index"
 
     export default {
         name: "index.vue",
@@ -147,7 +148,8 @@
         },
       },
       components: { //子组件
-        staff_index:Staff_index
+        staff_index:Staff_index,
+        role_index:Role_index
       },
       created(){
         this.getdata();
