@@ -73,6 +73,7 @@
 
 <script>
   import Staff_index from "../components/staff/staff_index"
+  import Role_index from "../components/role/role_index"
   import Goods_index from "../components/goods/goods_index"
 
     export default {
@@ -148,8 +149,7 @@
         },
       },
       components: { //子组件
-        staff_index:Staff_index,
-        goods_index: Goods_index
+        staff_index:Staff_index
       },
       created(){
         this.getdata();
