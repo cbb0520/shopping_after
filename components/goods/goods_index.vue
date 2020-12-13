@@ -10,6 +10,7 @@
           <el-option label="全部" value="0"></el-option>
           <el-option label="水果类" value="1"></el-option>
           <el-option label="蔬菜类" value="4"></el-option>
+          <el-option label="肉类" value="3"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
