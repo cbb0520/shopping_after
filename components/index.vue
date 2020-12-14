@@ -151,7 +151,9 @@
       },
       components: { //子组件
         staff_index:Staff_index,
-        role_index:Role_index
+        role_index:Role_index,
+        emp_power:Emp_power,
+        goods_index:Goods_index
       },
       created(){
         this.getdata();
