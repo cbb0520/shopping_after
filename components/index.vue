@@ -74,6 +74,7 @@
 <script>
   import Staff_index from "../components/staff/staff_index"
   import Role_index from "../components/role/role_index"
+  import Emp_power from "../components/emp_role/emp_power"
   import Goods_index from "../components/goods/goods_index"
   import Classify_index from "../components/classify/classify_index"
 
@@ -151,8 +152,10 @@
       },
       components: { //子组件
         staff_index:Staff_index,
-        goods_index: Goods_index,
-        classify_index: Classify_index
+        role_index:Role_index,
+        emp_power:Emp_power,
+        goods_index:Goods_index,
+        classify_index:Classify_index,
       },
       created(){
         this.getdata();
