@@ -12,6 +12,7 @@
 
   <el-table
     :data="roelData"
+    stripe
     style="width: 100%"
     >
     <el-table-column
