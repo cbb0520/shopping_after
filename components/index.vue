@@ -75,6 +75,7 @@
   import Staff_index from "../components/staff/staff_index"
   import Role_index from "../components/role/role_index"
   import Emp_power from "../components/emp_role/emp_power"
+  import Goods_index from "../components/goods/goods_index"
 
     export default {
         name: "index.vue",
@@ -150,8 +151,7 @@
       },
       components: { //子组件
         staff_index:Staff_index,
-        role_index:Role_index,
-        emp_power:Emp_power
+        role_index:Role_index
       },
       created(){
         this.getdata();
