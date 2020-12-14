@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import goodsEdit from "./goods_edit"
+  import goodsEdit from "./goods_edit"
 
   export default {
     name: "goods_index",
@@ -73,7 +73,8 @@ import goodsEdit from "./goods_edit"
         page: 1,
         dialogFormVisible: false,
         sel_gname: '',
-        sel_classify: '0'
+        sel_classify: '0',
+        oldgname: ''
       }
     },
     methods: {
@@ -85,11 +86,11 @@ import goodsEdit from "./goods_edit"
         }
         return '';
       },
-      getDataClassify(){
+      getDataClassify() {
         var _this = this;
         var params = new URLSearchParams();
         params.append("rows", 100);
-        this.$axios.post("/queryALlClassify.action",params).then(function (result) {
+        this.$axios.post("/queryALlClassify.action", params).then(function (result) {
           _this.classifyData = result.data.rows;
         }).catch(function (error) {
           alert(error)
@@ -108,7 +109,6 @@ import goodsEdit from "./goods_edit"
         });
       },
       pagechange(pageindex) {  //页码变更时
-        console.log(pageindex)
         this.page = pageindex;
         //根据pageindex  获取数据
         this.getData();
@@ -121,35 +121,54 @@ import goodsEdit from "./goods_edit"
         this.$axios.post("/queryGoodsById.action", params).then(function (result) {
           _this.$refs.goodupt.formGoods.gid = result.data.gid;
           _this.$refs.goodupt.formGoods.gname = result.data.gname;
-          _this.$refs.goodupt.formGoods.gimgs = result.data.gimgs;
+          //点击修改将图片设置成空
+          _this.$refs.goodupt.formGoods.gimgs = '';
           _this.$refs.goodupt.formGoods.limit = result.data.limit;
           _this.$refs.goodupt.formGoods.price = result.data.price;
+          //赋值修改前的商品名
+          _this.oldgname = result.data.gname;
+          //显示预浏览图片路径
+          _this.$refs.goodupt.imageUrl = result.data.gimgs;
         }).catch(function (error) {
           alert(error)
         });
         this.dialogFormVisible = true
       },
-      goods_bianjiOk() {
-        var _this = this;
-        var params = new URLSearchParams();
-        params.append("gid",this.$refs.goodupt.formGoods.gid)
-        params.append("gname",this.$refs.goodupt.formGoods.gname)
-        params.append("gimgs", this.$refs.goodupt.formGoods.gimgs)
-        params.append("limit", this.$refs.goodupt.formGoods.limit)
-        params.append("price", this.$refs.goodupt.formGoods.price)
-        this.$axios.post("uptGoods.action", params)
-          /*{params:{name:_this.username,page:_this.pageindex,rows:5}})*/
-          .then(function (result) {
-            _this.$message({
-              message: result.data.msg,
-              type: result.data.type
-            });
-            _this.getData();
-          })
-          .catch(function (error) {
-            //异步如果出现错误  触发catch里面的函数
-            alert(error);
+      goods_bianjiOk(event) {
+        //判断非空
+        let gname = this.$refs.goodupt.formGoods.gname;
+        if(gname == "" || gname == null){
+          this.$message({
+            message: '商品名不能为空！',
+            type: 'info'
           });
+          this.dialogFormVisible = false;
+          return;
+        }
+        var _this = this;
+        let formData = new FormData();
+        formData.append("img", this.$refs.goodupt.formGoods.gimgs);
+        formData.append("gid",this.$refs.goodupt.formGoods.gid)
+        formData.append("gname",gname)
+        formData.append("limit", this.$refs.goodupt.formGoods.limit)
+        formData.append("price", this.$refs.goodupt.formGoods.price)
+        formData.append("oldgname", this.oldgname)
+        this.$axios({
+          method: 'post',
+          url: 'uptGoods.action',
+          data: formData,
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(function (result) {
+          _this.$message({
+            message: result.data.msg,
+            type: result.data.type
+          });
+          _this.getData();
+        }).catch(function (error) {
+          console.log("上传失败"+error);
+        });
         this.dialogFormVisible = false;
       },
       goods_del(gid) {

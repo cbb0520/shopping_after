@@ -45,11 +45,11 @@
           <el-submenu v-for="menus in menu" :index="menus.id+''">
             <template slot="title" >
               <i :class="menus.iconCls"></i>
-              <span> {{menus.text}}</span>
+              <span> {{menus.label}}</span>
             </template>
             <el-menu-item-group v-for="childrens in menus.children"
             >
-              <el-menu-item @click="handleSelect(childrens.text,childrens.url)" :index="childrens.text">{{childrens.text}}</el-menu-item>
+              <el-menu-item @click="handleSelect(childrens.label,childrens.url)" :index="childrens.label">{{childrens.label}}</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
 
@@ -74,6 +74,7 @@
 <script>
   import Staff_index from "../components/staff/staff_index"
   import Role_index from "../components/role/role_index"
+  import Emp_power from "../components/emp_role/emp_power"
   import Goods_index from "../components/goods/goods_index"
   import Classify_index from "../components/classify/classify_index"
 
@@ -95,22 +96,22 @@
         handleClose(key, keyPath) {
           console.log(key, keyPath);
         },
-        handleSelect(text, url) {
+        handleSelect(label, url) {
 
           var res = this.editableTabs.some(function(item){
-            return item.title==text;
+            return item.title==label;
           });
           if(!res){
             let newTabName = ++this.tabIndex + '';
             this.editableTabs.push({
-              title: text,
-              name: text,
+              title: label,
+              name: label,
               content: url
 
             });
-            this.editableTabsValue = text;
+            this.editableTabsValue = label;
           }else {
-            this.editableTabsValue = text;
+            this.editableTabsValue = label;
           }
 
 
@@ -151,8 +152,10 @@
       },
       components: { //子组件
         staff_index:Staff_index,
-        goods_index: Goods_index,
-        classify_index: Classify_index
+        role_index:Role_index,
+        emp_power:Emp_power,
+        goods_index:Goods_index,
+        classify_index:Classify_index,
       },
       created(){
         this.getdata();

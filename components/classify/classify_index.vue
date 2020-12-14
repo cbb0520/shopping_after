@@ -65,7 +65,8 @@
         total: 1,
         page: 1,
         dialogFormVisible: false,
-        dialogFormAdd: false
+        dialogFormAdd: false,
+        oldfname: ''
       }
     },
     methods: {
@@ -88,16 +89,33 @@
         this.$axios.post("/queryClassifyById.action", params).then(function (result) {
           _this.$refs.classifyupt.formclassify.fid = result.data.fid;
           _this.$refs.classifyupt.formclassify.fname = result.data.fname;
+          _this.oldfname = result.data.fname;
         }).catch(function (error) {
           alert(error)
         });
         this.dialogFormVisible = true
       },
       classify_bianjiOk() {
+        //判断非空
+        let fname = this.$refs.classifyupt.formclassify.fname;
+        if(fname == "" || fname == null){
+          this.$message({
+            message: '类型名不能为空！',
+            type: 'info'
+          });
+          this.dialogFormVisible = false;
+          return;
+        }
+        //判断名字是否相同
+        if(fname == this.oldfname){
+          this.dialogFormVisible = false;
+          return;
+        }
         var _this = this;
         var params = new URLSearchParams();
-        params.append("fid", this.$refs.classifyupt.formclassify.fid)
-        params.append("fname", this.$refs.classifyupt.formclassify.fname)
+        params.append("fid", this.$refs.classifyupt.formclassify.fid);
+        params.append("fname", this.$refs.classifyupt.formclassify.fname);
+        params.append("oldfname", this.oldfname);
         this.$axios.post("uptClassify.action", params)
           .then(function (result) {
             _this.$message({
@@ -145,6 +163,16 @@
         this.dialogFormAdd = true
       },
       classify_addOk() {
+        //判断非空
+        let fname = this.$refs.classifyadd.formclassify.fname;
+        if(fname == "" || fname == null){
+          this.$message({
+            message: '类型名不能为空！',
+            type: 'info'
+          });
+          this.dialogFormVisible = false;
+          return;
+        }
         var _this = this;
         var params = new URLSearchParams();
         params.append("fid", this.$refs.classifyadd.formclassify.fid)
@@ -161,7 +189,7 @@
             //异步如果出现错误  触发catch里面的函数
             alert(error);
           });
-        this.dialogFormAdd = true
+        this.dialogFormAdd = false
       },
       pagechange(pageindex) {
         console.log(pageindex)
