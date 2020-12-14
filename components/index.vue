@@ -75,6 +75,7 @@
   import Staff_index from "../components/staff/staff_index"
   import Role_index from "../components/role/role_index"
   import Goods_index from "../components/goods/goods_index"
+  import Classify_index from "../components/classify/classify_index"
 
     export default {
         name: "index.vue",
@@ -149,7 +150,9 @@
         },
       },
       components: { //子组件
-        staff_index:Staff_index
+        staff_index:Staff_index,
+        goods_index: Goods_index,
+        classify_index: Classify_index
       },
       created(){
         this.getdata();
