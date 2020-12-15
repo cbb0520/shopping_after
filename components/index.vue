@@ -72,9 +72,9 @@
 </template>
 
 <script>
-  import Staff_index from "../components/staff/staff_index"
-  import Role_index from "../components/role/role_index"
-  import Emp_power from "../components/emp_role/emp_power"
+  import Staff_index from "./systems/staff/staff_index"
+  import Role_index from "./systems/role/role_index"
+  import Emp_power from "./systems/emp_role/emp_power"
   import Goods_index from "../components/goods/goods_index"
   import Classify_index from "../components/classify/classify_index"
   import Menu_empower from "./systems/role_meun/menu_empower"
