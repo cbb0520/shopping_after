@@ -72,11 +72,12 @@
 </template>
 
 <script>
-  import Staff_index from "../components/staff/staff_index"
-  import Role_index from "../components/role/role_index"
-  import Emp_power from "../components/emp_role/emp_power"
+  import Staff_index from "./systems/staff/staff_index"
+  import Role_index from "./systems/role/role_index"
+  import Emp_power from "./systems/emp_role/emp_power"
   import Goods_index from "../components/goods/goods_index"
   import Classify_index from "../components/classify/classify_index"
+  import Menu_empower from "./systems/role_meun/menu_empower"
 
     export default {
         name: "index.vue",
@@ -149,15 +150,25 @@
             this.editableTabs = tabs.filter(tab => tab.name !== targetName);
           }
         },
+        loginout(){
+          sessionStorage.removeItem("store");  //从浏览器session清空数据
+          this.$parent.$store.commit("setmsg",'');
+          this.$router.push("/login");   //跳转 登录页面
+        }
       },
       components: { //子组件
         staff_index:Staff_index,
         role_index:Role_index,
         emp_power:Emp_power,
         goods_index:Goods_index,
+        menu_empower:Menu_empower,
         classify_index:Classify_index,
       },
       created(){
+          console.log(this.$store.getters.getmsg)
+        if(this.$store.getters.getmsg==''){
+          this.$router.push("/login");
+        }
         this.getdata();
       },
     }
@@ -180,7 +191,7 @@
   .el-main {
     background-color: white;
     color: #333;
-
+    text-align: center;
     line-height: 40px;
   }
 

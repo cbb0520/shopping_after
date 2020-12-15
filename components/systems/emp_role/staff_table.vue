@@ -14,7 +14,6 @@
     :data="staffData"
     highlight-current-row
     @cell-click="dd"
-    @select="dd"
     style="width: 100%">
     <el-table-column
       prop="eid"
@@ -93,7 +92,6 @@
                   message: result.data,
                   type: 'success'
                 });
-                _this.getData();
               })
               .catch(function (error) {
                 //异步如果出现错误  触发catch里面的函数
