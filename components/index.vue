@@ -45,11 +45,11 @@
           <el-submenu v-for="menus in menu" :index="menus.id+''">
             <template slot="title" >
               <i :class="menus.iconCls"></i>
-              <span> {{menus.text}}</span>
+              <span> {{menus.label}}</span>
             </template>
             <el-menu-item-group v-for="childrens in menus.children"
             >
-              <el-menu-item @click="handleSelect(childrens.text,childrens.url)" :index="childrens.text">{{childrens.text}}</el-menu-item>
+              <el-menu-item @click="handleSelect(childrens.label,childrens.url)" :index="childrens.label">{{childrens.label}}</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
 
@@ -73,7 +73,9 @@
 
 <script>
   import Staff_index from "../components/staff/staff_index"
-
+  import Merchants_index from "../components/merchants/merchants_index"
+  import Merchants_appraisal from "../components/merchants/merchants_appraisal"
+  import Allot_index from "../components/allot/allot_index"
     export default {
         name: "index.vue",
       data () {
@@ -87,31 +89,25 @@
       },
       methods: {
         handleOpen(key, keyPath) {
-          console.log(key, keyPath);
         },
         handleClose(key, keyPath) {
-          console.log(key, keyPath);
         },
-        handleSelect(text, url) {
+        handleSelect(label, url) {
 
           var res = this.editableTabs.some(function(item){
-            return item.title==text;
+            return item.title==label;
           });
           if(!res){
             let newTabName = ++this.tabIndex + '';
             this.editableTabs.push({
-              title: text,
-              name: text,
+              title: label,
+              name: label,
               content: url
-
             });
-            this.editableTabsValue = text;
+            this.editableTabsValue = label;
           }else {
-            this.editableTabsValue = text;
+            this.editableTabsValue = label;
           }
-
-
-
         },
         getdata: function () {
           var _this = this;
@@ -140,14 +136,16 @@
                 }
               });
             }
-
             this.editableTabsValue = activeName;
             this.editableTabs = tabs.filter(tab => tab.name !== targetName);
           }
         },
       },
       components: { //子组件
-        staff_index:Staff_index
+        staff_index:Staff_index,
+        merchants_index:Merchants_index,
+        merchants_appraisal:Merchants_appraisal,
+        allot_index:Allot_index
       },
       created(){
         this.getdata();
