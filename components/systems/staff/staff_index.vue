@@ -70,7 +70,14 @@
 
     </el-table>
 
-    <el-pagination @current-change="pagechange" layout="prev, pager, next" :total="total" :page-size="4">
+    <el-pagination
+
+      @current-change="pagechange"
+
+      :page-sizes="[5, 10, 15, 20]"
+      :page-size="5"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
     </el-pagination>
 
     <el-dialog title="添加"  :visible.sync="dialogFormadd">
@@ -188,7 +195,7 @@
             /*{params:{name:_this.username,page:_this.pageindex,rows:5}})*/
             .then(function (result) {
 
-              this. dialogFormadd = false
+              _this.dialogFormadd = false
 
                 _this.$message({
               showClose: true,
@@ -202,6 +209,7 @@
           });
 
         },
+        //编辑数据
         bianji(eid){
           this.dialogFormVisible = true
           var _this = this;
@@ -228,6 +236,7 @@
               alert(error);
             });
         },
+        //确认编辑
         update() {
           this.dialogFormVisible = false
           var _this = this;
@@ -276,5 +285,11 @@
 </script>
 
 <style scoped>
+  .el-table .warning-row {
+    background: oldlace;
+  }
 
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
 </style>
