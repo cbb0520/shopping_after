@@ -28,7 +28,7 @@
           <el-menu-item index="5">当前用户{{this.$store.getters.getmsg.account}}</el-menu-item>
 
         </el-col>
-        <el-menu-item index="6" @click="loginout"><i class="el-icon-unlock"></i>退出登录</el-menu-item>
+        <el-menu-item index="6"><i class="el-icon-unlock"></i>退出登录</el-menu-item>
 
       </el-menu>
 
@@ -72,10 +72,11 @@
 </template>
 
 <script>
-  import Staff_index from "./systems/staff/staff_index"
-  import Role_index from "./systems/role/role_index"
-  import Emp_power from "./systems/emp_role/emp_power"
+  import Staff_index from "../components/staff/staff_index"
+  import Role_index from "../components/role/role_index"
+  import Emp_power from "../components/emp_role/emp_power"
   import Goods_index from "../components/goods/goods_index"
+  import Classify_index from "../components/classify/classify_index"
   import Menu_empower from "./systems/role_meun/menu_empower"
 
     export default {
@@ -161,6 +162,8 @@
         emp_power:Emp_power,
         goods_index:Goods_index,
         menu_empower:Menu_empower,
+        goods_index:Goods_index,
+        classify_index:Classify_index,
       },
       created(){
           console.log(this.$store.getters.getmsg)

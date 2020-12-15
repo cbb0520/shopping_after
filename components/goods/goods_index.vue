@@ -8,9 +8,7 @@
       <el-form-item>
         <el-select placeholder="商品类型" v-model="sel_classify">
           <el-option label="全部" value="0"></el-option>
-          <el-option label="水果类" value="1"></el-option>
-          <el-option label="蔬菜类" value="4"></el-option>
-          <el-option label="肉类" value="3"></el-option>
+          <el-option v-for="c in classifyData" :label="c.fname" :value="c.fid"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -48,7 +46,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination @current-change="pagechange" layout="prev, pager, next" :total="total" :page-size="4">
+    <el-pagination @current-change="pagechange" layout="prev, pager, next" :total="total" :page-size="5">
     </el-pagination>
 
     <!--编辑模态框-->
@@ -70,7 +68,9 @@ import goodsEdit from "./goods_edit"
     data() {
       return {
         tableData: [],
+        classifyData: [],
         total: 1,
+        page: 1,
         dialogFormVisible: false,
         sel_gname: '',
         sel_classify: '0'
@@ -85,6 +85,16 @@ import goodsEdit from "./goods_edit"
         }
         return '';
       },
+      getDataClassify(){
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("rows", 100);
+        this.$axios.post("/queryALlClassify.action",params).then(function (result) {
+          _this.classifyData = result.data.rows;
+        }).catch(function (error) {
+          alert(error)
+        });
+      },
       getData() { //获取数据方法
         var _this = this;
         var params = new URLSearchParams();
@@ -92,13 +102,13 @@ import goodsEdit from "./goods_edit"
         params.append("classify", _this.sel_classify);
         this.$axios.post("/queryAllGoods.action", params).then(function (result) {
           _this.tableData = result.data.rows;
-          console.log(_this.tableData)
+          _this.total = result.data.total;
         }).catch(function (error) {
           alert(error)
         });
       },
       pagechange(pageindex) {  //页码变更时
-        //console.log(pageindex)
+        console.log(pageindex)
         this.page = pageindex;
         //根据pageindex  获取数据
         this.getData();
@@ -120,7 +130,6 @@ import goodsEdit from "./goods_edit"
         this.dialogFormVisible = true
       },
       goods_bianjiOk() {
-        this.dialogFormVisible = false;
         var _this = this;
         var params = new URLSearchParams();
         params.append("gid",this.$refs.goodupt.formGoods.gid)
@@ -141,6 +150,7 @@ import goodsEdit from "./goods_edit"
             //异步如果出现错误  触发catch里面的函数
             alert(error);
           });
+        this.dialogFormVisible = false;
       },
       goods_del(gid) {
         var _this = this;
@@ -150,7 +160,6 @@ import goodsEdit from "./goods_edit"
           type: 'warning'
         }).then(() => {
           //确认方法
-          var _this = this;
           var params = new URLSearchParams();
           params.append("gid", gid);
           this.$axios.post("/delGoods.action", params).then(function (result) {
@@ -178,6 +187,7 @@ import goodsEdit from "./goods_edit"
     },
     created() {
       this.getData();
+      this.getDataClassify();
     }
   }
 </script>
