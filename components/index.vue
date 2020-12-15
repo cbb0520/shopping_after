@@ -28,7 +28,7 @@
           <el-menu-item index="5">当前用户{{this.$store.getters.getmsg.account}}</el-menu-item>
 
         </el-col>
-        <el-menu-item index="6"><i class="el-icon-unlock"></i>退出登录</el-menu-item>
+        <el-menu-item index="6" @click="loginout"><i class="el-icon-unlock"></i>退出登录</el-menu-item>
 
       </el-menu>
 
@@ -45,11 +45,11 @@
           <el-submenu v-for="menus in menu" :index="menus.id+''">
             <template slot="title" >
               <i :class="menus.iconCls"></i>
-              <span> {{menus.text}}</span>
+              <span> {{menus.label}}</span>
             </template>
             <el-menu-item-group v-for="childrens in menus.children"
             >
-              <el-menu-item @click="handleSelect(childrens.text,childrens.url)" :index="childrens.text">{{childrens.text}}</el-menu-item>
+              <el-menu-item @click="handleSelect(childrens.label,childrens.url)" :index="childrens.label">{{childrens.label}}</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
 
@@ -72,10 +72,11 @@
 </template>
 
 <script>
-  import Staff_index from "../components/staff/staff_index"
-  import Role_index from "../components/role/role_index"
-  import Emp_power from "../components/emp_role/emp_power"
+  import Staff_index from "./systems/staff/staff_index"
+  import Role_index from "./systems/role/role_index"
+  import Emp_power from "./systems/emp_role/emp_power"
   import Goods_index from "../components/goods/goods_index"
+  import Menu_empower from "./systems/role_meun/menu_empower"
 
     export default {
         name: "index.vue",
@@ -95,22 +96,22 @@
         handleClose(key, keyPath) {
           console.log(key, keyPath);
         },
-        handleSelect(text, url) {
+        handleSelect(label, url) {
 
           var res = this.editableTabs.some(function(item){
-            return item.title==text;
+            return item.title==label;
           });
           if(!res){
             let newTabName = ++this.tabIndex + '';
             this.editableTabs.push({
-              title: text,
-              name: text,
+              title: label,
+              name: label,
               content: url
 
             });
-            this.editableTabsValue = text;
+            this.editableTabsValue = label;
           }else {
-            this.editableTabsValue = text;
+            this.editableTabsValue = label;
           }
 
 
@@ -148,14 +149,24 @@
             this.editableTabs = tabs.filter(tab => tab.name !== targetName);
           }
         },
+        loginout(){
+          sessionStorage.removeItem("store");  //从浏览器session清空数据
+          this.$parent.$store.commit("setmsg",'');
+          this.$router.push("/login");   //跳转 登录页面
+        }
       },
       components: { //子组件
         staff_index:Staff_index,
         role_index:Role_index,
         emp_power:Emp_power,
-        goods_index:Goods_index
+        goods_index:Goods_index,
+        menu_empower:Menu_empower,
       },
       created(){
+          console.log(this.$store.getters.getmsg)
+        if(this.$store.getters.getmsg==''){
+          this.$router.push("/login");
+        }
         this.getdata();
       },
     }
@@ -178,7 +189,7 @@
   .el-main {
     background-color: white;
     color: #333;
-
+    text-align: center;
     line-height: 40px;
   }
 

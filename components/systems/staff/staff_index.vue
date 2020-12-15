@@ -70,7 +70,14 @@
 
     </el-table>
 
-    <el-pagination @current-change="pagechange" layout="prev, pager, next" :total="total" :page-size="5">
+    <el-pagination
+
+      @current-change="pagechange"
+
+      :page-sizes="[5, 10, 15, 20]"
+      :page-size="5"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
     </el-pagination>
 
     <el-dialog title="添加"  :visible.sync="dialogFormadd">

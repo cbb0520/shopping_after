@@ -35,8 +35,15 @@
 
   </el-table>
 
-  <el-pagination @current-change="pagechange" layout="prev, pager, next" :total="total" :page-size="4">
-  </el-pagination>
+    <el-pagination
+
+      @current-change="pagechange"
+
+      :page-sizes="[4, 8, 12, 16]"
+      :page-size="4"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
 
     <el-dialog title="添加"  :visible.sync="dialogFormadd">
       <el-input v-model="add_rname" autocomplete="off" placeholder="请输入新角色"></el-input>

@@ -32,8 +32,6 @@
       },
       methods:{
         getData(eid) { //获取数据方法
-
-          var dd = [this.roel_Data[1], this.roel_Data[2]];
           var _this = this;
           var params = new URLSearchParams();
           if(eid ==undefined){
