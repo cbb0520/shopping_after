@@ -162,7 +162,6 @@
         emp_power:Emp_power,
         goods_index:Goods_index,
         menu_empower:Menu_empower,
-        goods_index:Goods_index,
         classify_index:Classify_index,
       },
       created(){
