@@ -81,6 +81,7 @@
   import Merchants_index from "../components/merchants/merchants_index"
   import Merchants_appraisal from "../components/merchants/merchants_appraisal"
   import Allot_index from "../components/allot/allot_index"
+  import Releaserecord_index from "../components/allot/releaserecord/releaserecord_index"
     export default {
         name: "index.vue",
       data () {
@@ -160,7 +161,8 @@
         classify_index:Classify_index,
         merchants_index:Merchants_index,
         merchants_appraisal:Merchants_appraisal,
-        allot_index:Allot_index
+        allot_index:Allot_index,
+        releaserecord_index:Releaserecord_index,
       },
       created(){
           console.log(this.$store.getters.getmsg)

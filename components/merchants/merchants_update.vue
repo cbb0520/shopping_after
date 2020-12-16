@@ -118,10 +118,44 @@
               alert(error);
             });
         },
+        getcity2: function (sheng) {
+          var _this = this;
+          var params=new URLSearchParams();
+          params.append("provincecode",sheng)
+          //异步获取数据
+          this.$axios.post("/queryCity.action", params)
+            .then(function (result) {
+              //异步成功，执行then里面的函数
+              //result  结果  很多的响应信息
+              //获取后端传递的json数据  result.data
+              _this.city = result.data;
+            })
+            .catch(function (error) {
+              //异步如果出现错误  触发catch里面的函数
+              alert(error);
+            });
+        },
         getarea: function () {
           var _this = this;
           var params=new URLSearchParams();
           params.append("citycode",_this.citycode)
+          //异步获取数据
+          this.$axios.post("/queryArea.action", params)
+            .then(function (result) {
+              //异步成功，执行then里面的函数
+              //result  结果  很多的响应信息
+              //获取后端传递的json数据  result.data
+              _this.area = result.data;
+            })
+            .catch(function (error) {
+              //异步如果出现错误  触发catch里面的函数
+              alert(error);
+            });
+        },
+        getarea2: function (shi) {
+          var _this = this;
+          var params=new URLSearchParams();
+          params.append("citycode",shi)
           //异步获取数据
           this.$axios.post("/queryArea.action", params)
             .then(function (result) {

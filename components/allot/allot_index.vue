@@ -12,7 +12,8 @@
       <el-table-column prop="user.uname" label="用户名"></el-table-column>
       <el-table-column prop="merchants.mname" label="商户名"></el-table-column>
       <el-table-column prop="price" label="价格"></el-table-column>
-      <el-table-column prop="state" label="状态"></el-table-column>
+      <el-table-column prop="buytime" label="购买时间"></el-table-column>
+      <el-table-column prop="mstate" label="状态"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button type="info" icon="el-icon-message" circle @click="particulars(scope.row.did)"></el-button>
@@ -59,7 +60,22 @@
           });
         },
         delivery(val){
-          console.log(val)
+          var _this = this;
+          var params = new URLSearchParams();
+          params.append("did",val);
+          _this.$axios.post("/updateDeliverState.action", params)
+            .then(function (result) {
+            _this.$message({
+              message: result.data.msg,
+              type: 'success'
+            });
+              _this.getData();
+          }).catch(function (error) {
+            _this.$message({
+              message: '发货失败',
+              type: 'success'
+            });
+          });
         },
         particulars(val){
           var _this = this;
