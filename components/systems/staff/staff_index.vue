@@ -102,7 +102,6 @@
   import Staff_add from "./staff_add"
   import Staff_update from "./staff_update"
 
-
     export default {
         name: "staff_index",
       data () {
