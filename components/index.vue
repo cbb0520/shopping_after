@@ -78,6 +78,7 @@
   import Goods_index from "./commodity/goods/goods_index"
   import Classify_index from "./commodity/classify/classify_index"
   import Menu_empower from "./systems/role_meun/menu_empower"
+  import Warehouse_index from "./warehouse/warehouse_index"
 
     export default {
         name: "index.vue",
@@ -163,6 +164,7 @@
         goods_index:Goods_index,
         menu_empower:Menu_empower,
         classify_index:Classify_index,
+        warehouse_index: Warehouse_index
       },
       created(){
           console.log(this.$store.getters.getmsg)

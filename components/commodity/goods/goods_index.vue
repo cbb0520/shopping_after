@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <el-form :inline="true" class="demo-form-inline">
+    <el-form :inline="true" class="demo-form-inline" style="float: left">
       <el-form-item>
         <el-input placeholder="商品名" v-model="sel_gname"></el-input>
       </el-form-item>

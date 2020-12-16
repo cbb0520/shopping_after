@@ -3,10 +3,10 @@
   <div>
 
     <el-form :inline="true">
-      <el-form-item>
+      <el-form-item style="float: left">
         <el-input placeholder="商品名" v-model="sel_fname"></el-input>
       </el-form-item>
-      <el-form-item>
+      <el-form-item style="float: left">
         <el-button type="primary" @click="classify_sel">查询</el-button>
       </el-form-item>
       <el-form-item style="float: right">
@@ -192,7 +192,6 @@
         this.dialogFormAdd = false
       },
       pagechange(pageindex) {
-        console.log(pageindex)
         this.page = pageindex;
         //根据pageindex  获取数据
         this.getDataClassify();
