@@ -1,8 +1,9 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="12"><mrole_table></mrole_table></el-col>
-      <el-col :span="12"><menu_tree ref="menutrr"></menu_tree></el-col>
+      <el-col :span="11"><mrole_table></mrole_table></el-col>
+      <el-col :span="2"><el-divider direction="vertical"></el-divider></el-col>
+      <el-col :span="11"><menu_tree ref="menutrr"></menu_tree></el-col>
     </el-row>
   </div>
 </template>
@@ -36,5 +37,4 @@
 </script>
 
 <style scoped>
-
 </style>

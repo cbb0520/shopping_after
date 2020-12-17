@@ -1,15 +1,7 @@
 <template>
   <div>
-  <el-form :inline="true"  class="demo-form-inline">
-    <el-form-item label="角色名">
-      <el-input v-model="r_rname" placeholder="请输入角色名"></el-input>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="rolesele">查询</el-button>
-      <el-button type="primary" @click="menushow">授权</el-button>
-    </el-form-item>
-  </el-form>
-
+    以下是你当前所拥有的角色
+    <el-button type="primary" @click="menushow">授权</el-button>
   <el-table
     :data="roelDatas"
     @cell-click="danxuan"
@@ -28,15 +20,6 @@
     >
     </el-table-column>
   </el-table>
-    <el-pagination
-
-      @current-change="pagechange"
-
-      :page-sizes="[4, 8, 12, 16]"
-      :page-size="4"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total">
-    </el-pagination>
   </div>
 </template>
 
@@ -46,9 +29,6 @@
       data () {
         return {
           roelDatas:[],
-          total:1,
-          page:1,
-          r_rname:'',
           rid:''
         }
       },
@@ -58,20 +38,14 @@
           var _this = this;
 
           var params = new URLSearchParams();
-          params.append("rname", this.r_rname);
-          params.append("page", this.page);
-
-          this.$axios.post("/queryRoLe.action",params).
+          params.append("eid",this.$store.getters.getmsg.eid)
+          this.$axios.post("/staffrole.action",params).
           then(function(result) {
-            _this.roelDatas = result.data.rows;
-            _this.total = result.data.total;
+            _this.roelDatas = result.data;
           }).
           catch(function(error) {
             alert(error)
           });
-        },
-        rolesele(){
-          this.getData();
         },
         danxuan(row){
           this.rid = row.rid
@@ -95,13 +69,6 @@
                 //异步如果出现错误  触发catch里面的函数
                 alert(error);
               });
-
-        },
-        pagechange(pageindex){  //页码变更时
-          //console.log(pageindex)
-          this.page = pageindex;
-          //根据pageindex  获取数据
-          this.getData();
 
         },
       },

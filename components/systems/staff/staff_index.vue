@@ -82,18 +82,10 @@
 
     <el-dialog title="添加"  :visible.sync="dialogFormadd">
        <staff_add ref="stadd"></staff_add>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormadd = false">取 消</el-button>
-        <el-button type="primary" @click="staffadd">添加</el-button>
-      </div>
     </el-dialog>
 
     <el-dialog title="编辑"  :visible.sync="dialogFormVisible">
       <staff_update ref="stupda"></staff_update>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="update">编辑</el-button>
-      </div>
     </el-dialog>
   </div>
 </template>
@@ -181,34 +173,6 @@
 
       },
         //添加
-        staffadd(){
-          var _this = this;
-          var params = new URLSearchParams();
-          params.append("account",this.$refs.stadd.formStaff.account)
-          params.append("password",this.$refs.stadd.formStaff.password)
-          params.append("name",this.$refs.stadd.formStaff.name)
-          params.append("sex",this.$refs.stadd.formStaff.sex)
-          params.append("phone",this.$refs.stadd.formStaff.phone)
-          params.append("etiem",this.$refs.stadd.formStaff.etiem)
-          params.append("address",this.$refs.stadd.formStaff.address)
-          this.$axios.post("/addStaff.action",params)
-            /*{params:{name:_this.username,page:_this.pageindex,rows:5}})*/
-            .then(function (result) {
-
-              _this.dialogFormadd = false
-
-                _this.$message({
-              showClose: true,
-                message: result.data,
-                type: 'success'
-            });
-              _this.getData();
-            }).
-          catch(function(error) {
-            alert(error)
-          });
-
-        },
         //编辑数据
         bianji(eid){
           this.dialogFormVisible = true
@@ -237,35 +201,6 @@
             });
         },
         //确认编辑
-        update() {
-          this.dialogFormVisible = false
-          var _this = this;
-          var params = new URLSearchParams();
-          params.append("eid",_this.$refs.stupda.formStaffupdate.eid)
-          params.append("password",this.$refs.stupda.formStaffupdate.password)
-          params.append("name", this.$refs.stupda.formStaffupdate.name)
-          params.append("sex", this.$refs.stupda.formStaffupdate.sex)
-          params.append("phone", this.$refs.stupda.formStaffupdate.phone)
-          params.append("etiem", this.$refs.stupda.formStaffupdate.etiem)
-          params.append("address", this.$refs.stupda.formStaffupdate.address)
-          this.$axios.post("updateStaff.action", params)
-            /*{params:{name:_this.username,page:_this.pageindex,rows:5}})*/
-            .then(function (result) {
-              //异步成功，执行then里面的函数
-              //result  结果  很多的响应信息
-              //获取后端传递的json数据  result.data
-              _this.$message({
-                message: result.data,
-                type: 'success'
-              });
-              _this.getData();
-            })
-            .catch(function (error) {
-              //异步如果出现错误  触发catch里面的函数
-              alert(error);
-            });
-
-        },
         pagechange(pageindex){  //页码变更时
           //console.log(pageindex)
           this.page = pageindex;
@@ -291,5 +226,10 @@
 
   .el-table .success-row {
     background: #f0f9eb;
+  }
+
+  .el-pagination{
+
+    text-align: center;
   }
 </style>

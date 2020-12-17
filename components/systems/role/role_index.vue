@@ -136,6 +136,10 @@
 
         roleadd(){
           var _this = this;
+          if(this.add_rname==''){
+            this.$message.error('错了哦，请输入角色');
+            return false;
+          }
           var params = new URLSearchParams();
           params.append("rname",this.add_rname)
           this.$axios.post("/addRoLe.action",params)
@@ -177,6 +181,10 @@
             });
         },
         roleupdate(){
+          if(this.roelform.rname==''){
+            this.$message.error('错了哦，请输入角色');
+            return false;
+          }
           this.dialogFormVisible = false
           var _this = this;
           var params = new URLSearchParams();
@@ -222,5 +230,9 @@
 
   .el-table .success-row {
     background: #f0f9eb;
+  }
+  .el-pagination{
+
+    text-align: center;
   }
 </style>

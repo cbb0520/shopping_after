@@ -78,12 +78,14 @@
   import Goods_index from "./commodity/goods/goods_index"
   import Classify_index from "./commodity/classify/classify_index"
   import Menu_empower from "./systems/role_meun/menu_empower"
+  import Market from "./statistics/marketing/market"
   import Merchants_index from "../components/merchants/merchants_index"
   import Merchants_appraisal from "../components/merchants/merchants_appraisal"
   import Allot_index from "../components/allot/allot_index"
   import User_index from "../components/user/user_index"
   import Releaserecord_index from "../components/allot/releaserecord/releaserecord_index"
   import Warehouse_index from "./warehouse/warehouse_index"
+
 
     export default {
         name: "index.vue",
@@ -169,6 +171,7 @@
         goods_index:Goods_index,
         menu_empower:Menu_empower,
         classify_index:Classify_index,
+        market:Market,
         merchants_index:Merchants_index,
         merchants_appraisal:Merchants_appraisal,
         allot_index:Allot_index,
@@ -177,6 +180,7 @@
         warehouse_index: Warehouse_index
       },
       created(){
+        this.handleSelect("营收统计",'market');
           console.log(this.$store.getters.getmsg)
         if(this.$store.getters.getmsg==''){
           this.$router.push("/login");
@@ -203,8 +207,6 @@
   .el-main {
     background-color: white;
     color: #333;
-    text-align: center;
-    line-height: 40px;
   }
 
   body > .el-container {
