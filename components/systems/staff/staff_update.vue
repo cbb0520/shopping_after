@@ -36,7 +36,8 @@
         v-model="formStaffupdate.etiem"
         type="date"
         placeholder="选择日期"
-        value-format="yyyy-MM-dd">
+        value-format="yyyy-MM-dd"
+        :picker-options="pickerOptions">
       </el-date-picker>
     </el-form-item>
 
@@ -68,6 +69,11 @@
             address:'',
           },
           formLabelWidth: '120px',
+          pickerOptions: {
+            disabledDate(time) {
+              return time.getTime() > Date.now();
+            },
+          },
           satuprules: {
             account: [
               { required: true, message: '请输入账户', trigger: 'blur' }

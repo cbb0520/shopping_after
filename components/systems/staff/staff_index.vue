@@ -34,6 +34,9 @@
         prop="password"
         label="密码"
         >
+        <template slot-scope="scope">
+         <p v-if="scope.row.password !=''">*****</p>
+        </template>
       </el-table-column>
       <el-table-column
         prop="name"

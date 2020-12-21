@@ -28,7 +28,7 @@
           <el-menu-item index="5">当前用户{{this.$store.getters.getmsg.account}}</el-menu-item>
 
         </el-col>
-        <el-menu-item index="6"><i class="el-icon-unlock"></i>退出登录</el-menu-item>
+        <el-menu-item index="6" @click="loginout"><i class="el-icon-unlock"></i>退出登录</el-menu-item>
 
       </el-menu>
 
@@ -78,13 +78,14 @@
   import Goods_index from "./commodity/goods/goods_index"
   import Classify_index from "./commodity/classify/classify_index"
   import Menu_empower from "./systems/role_meun/menu_empower"
-  import Market from "./statistics/marketing/market"
+  import Revnue from "./statistics/revnueing/revnue"
   import Merchants_index from "../components/merchants/merchants_index"
   import Merchants_appraisal from "../components/merchants/merchants_appraisal"
   import Allot_index from "../components/allot/allot_index"
   import User_index from "../components/user/user_index"
   import Releaserecord_index from "../components/allot/releaserecord/releaserecord_index"
   import Warehouse_index from "./warehouse/warehouse_index"
+  import Market from "./statistics/marketing/market"
 
 
     export default {
@@ -128,7 +129,9 @@
         },
         getdata: function () {
           var _this = this;
-          this.$axios.post("meuncc.action")
+          var params = new URLSearchParams();
+          params.append("eid", this.$store.getters.getmsg.eid)
+          this.$axios.post("meuncc.action",params)
             /*{params:{name:_this.username,page:_this.pageindex,rows:5}})*/
             .then(function (result) {
 
@@ -171,21 +174,22 @@
         goods_index:Goods_index,
         menu_empower:Menu_empower,
         classify_index:Classify_index,
-        market:Market,
+        revnue:Revnue,
         merchants_index:Merchants_index,
         merchants_appraisal:Merchants_appraisal,
         allot_index:Allot_index,
         user_index:User_index,
         releaserecord_index:Releaserecord_index,
-        warehouse_index: Warehouse_index
+        warehouse_index: Warehouse_index,
+        market:Market,
       },
       created(){
-        this.handleSelect("营收统计",'market');
-          console.log(this.$store.getters.getmsg)
         if(this.$store.getters.getmsg==''){
           this.$router.push("/login");
+        }else {
+          this.getdata();
+          this.handleSelect("营收统计",'revnue');
         }
-        this.getdata();
       },
     }
 </script>

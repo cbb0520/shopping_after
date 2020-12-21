@@ -4,7 +4,7 @@
     <el-form :model="formStaff" :rules="rules" ref="formStaff">
 
       <el-form-item label="账户" :label-width="formLabelWidth" prop="account">
-        <el-input v-model="formStaff.account" autocomplete="off" placeholder="请输入账户"></el-input>
+        <el-input v-model="formStaff.account" @change="pandan" autocomplete="off" placeholder="请输入账户"></el-input>
       </el-form-item>
       <el-form-item label="密码" :label-width="formLabelWidth" prop="password">
         <el-input v-model="formStaff.password" placeholder="请输入密码" autocomplete="off"  show-password></el-input>
@@ -37,7 +37,8 @@
           v-model="formStaff.etiem"
           type="date"
           placeholder="选择日期"
-          value-format="yyyy-MM-dd">
+          value-format="yyyy-MM-dd"
+          :picker-options="pickerOptions">
         </el-date-picker>
       </el-form-item>
 
@@ -70,6 +71,11 @@
             address:'',
           },
           formLabelWidth: '120px',
+          pickerOptions: {
+            disabledDate(time) {
+              return time.getTime() > Date.now();
+            },
+          },
           rules: {
             account: [
               { required: true, message: '请输入账户', trigger: 'blur' }
@@ -98,6 +104,23 @@
 
       },
       methods: {
+          //判断账户是否存在
+        pandan(){
+          var _this = this;
+          var params = new URLSearchParams();
+          params.append("account",this.formStaff.account)
+          this.$axios.post("/staffacount.action",params)
+            /*{params:{name:_this.username,page:_this.pageindex,rows:5}})*/
+            .then(function (result) {
+              if(result.data != ''){
+                _this.$message.error('错了哦，账户已经存在');
+                _this.formStaff.account="";
+              }
+            }).
+          catch(function(error) {
+            alert(error)
+          });
+        },
         staffadd(formName) {
           console.log(formName)
           this.$refs[formName].validate((valid) => {

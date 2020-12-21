@@ -1,42 +1,52 @@
 <template>
-<div>
+  <div>
   <el-row>
+    <el-form :inline="true"  class="demo-form-inline">
+      <el-form-item label="商品名称">
+        <el-input v-model="gname"  placeholder="商品名称"></el-input>
+      </el-form-item>
+      <el-form-item label="商品分类">
+        <el-select  v-model="fname" placeholder="商品分类">
+          <el-option label="--请选择分类" value=""></el-option>
+          <el-option v-for="fname in fnames" :label="fname.fname" :value="fname.fname"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="onSubmit">查询</el-button>
+      </el-form-item>
+    </el-form>
     <el-col :span="8">
-      <el-form :inline="true"class="demo-form-inline">
-        <el-form-item label="年份">
-          <el-date-picker
-            v-model="year"
-            type="year"
-            value-format="yyyy"
-            placeholder="选择年">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="seleyear">查询</el-button>
-        </el-form-item>
-      </el-form>
-
       <el-table
-        :data="revnueData"
+        :data="marketData"
         style="width: 100%"
-        >
+      >
         <el-table-column
-          prop="mothen"
-          label="月份/总年度"
+          prop="goods.gname"
+          label="商品名称"
         >
         </el-table-column>
         <el-table-column
-          prop="price"
-          label="营收额"
+          prop="dcount"
+          label="销售数量"
         >
         </el-table-column>
       </el-table>
+
+      <el-pagination
+
+        @current-change="pagechange"
+
+        :page-sizes="[5, 10, 15, 20]"
+        :page-size="5"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
     </el-col>
-    <el-col :span="8"><div id="main2" style="width: 380px;height:400px;"></div></el-col>
-    <el-col :span="8"><div id="main" style="width: 400px;height:400px;"></div></el-col>
+    <el-col :span="8"><div id="main4" style="width: 350px;height:400px;"></div></el-col>
+    <el-col :span="8"><div id="main3" style="width: 400px;height:400px;"></div></el-col>
   </el-row>
 
-</div>
+  </div>
 </template>
 
 <script>
@@ -44,7 +54,7 @@
   var echarts = require('echarts/lib/echarts');
   // 引入柱状图
   require('echarts/lib/chart/bar');
-  // 引入柱状图
+  // 引入饼状图
   require('echarts/lib/chart/pie');
   // 引入提示框和标题组件
   require('echarts/lib/component/tooltip');
@@ -54,35 +64,93 @@
         name: "market",
       data () {
         return {
-          year:'',
-          revnueData:[],
-          mothed:[],
-          price:[],
-          zong_sum:[],
-          }
+          total:1,
+          page:1,
+          marketData:[],//营收统计数据
+          barName:[],
+          barvale:[],
+          fnames:[],
+          fname:'',
+          gname:''
+        }
       },
-      methods: {
-        getData() { //获取数据方法
+      methods:{
+        onSubmit(){
+          this.market();
+        },
+        classify(){
+          var _this = this;
+          this.$axios.post("/queryClassify.action").
+          then(function(result) {
+            _this.fnames = result.data;
+          }).
+          catch(function(error) {
+            alert(error)
+          });
+        },
+        market(){
+          var length = 10;
+          var _this = this;
+          _this.barName.splice(0, _this.barName.length)
+          _this.barvale.splice(0, _this.barvale.length)
+          var params = new URLSearchParams();
+          params.append("gname", this.gname);
+          params.append("fname", this.fname);
+          params.append("page", this.page);
+
+          this.$axios.post("/queryMarketbyCond.action",params).
+          then(function(result) {
+            _this.marketData = result.data.rows;
+            _this.total = result.data.total;
+             if(result.data.rows.length<10){
+              length=result.data.rows.length
+             }
+             for (let gg = 0; gg < length; gg++) {
+               _this.barName.push(result.data.rows[gg].goods.gname);
+               _this.barvale.push(result.data.rows[gg].dcount);
+             }
+
+            var myChart = echarts.init(document.getElementById('main3'));
+            // 指定图表的配置项和数据
+            let option = {
+              title: {
+                text: "销量前五的商品"
+              },
+              tooltip: {},
+              legend: {
+                data: ["销量"]
+              },
+              xAxis: {
+                data: _this.barName
+              },
+              yAxis: {},
+              series: [
+                {
+                  name: "销售量",
+                  type: "bar",
+                  data: _this.barvale
+                }
+              ]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+          }).
+          catch(function(error) {
+            alert(error)
+          });
+
+        },
+        barmarket(){
 
           var _this = this;
-
-          var params = new URLSearchParams();
-          params.append("year", this.year);
-          this.$axios.post("/queryshouru.action",params).
+          this.$axios.post("/quryMarketFen.action").
           then(function(result) {
-            _this.revnueData = result.data;
-
-            _this.zong_sum.splice(0, _this.zong_sum.length)
-            for(var i=result.data.length-1 ;i>result.data.length-5;i--){
-              _this.zong_sum.push({value:result.data[i].price,name:result.data[i].mothen});
-            }
-            _this.revnueData.splice(12,4)
-            var myChart = echarts.init(document.getElementById('main2'));
+            var myChart = echarts.init(document.getElementById('main4'));
             // 指定图表的配置项和数据
             var option = {
               title: {
-                text: '公司总营收/佣金总发放量',
-                subtext: '',
+                text: '各类型销售情况',
+                subtext: '没有出售记录不会显示哦',
                 left: 'center'
               },
               tooltip: {
@@ -96,11 +164,11 @@
               },
               series: [
                 {
-                  name: '营销收入',
+                  name: '销售情况',
                   type: 'pie',
                   radius: '55%',
                   center: ['50%', '60%'],
-                  data:_this.zong_sum ,
+                  data:result.data,
                   emphasis: {
                     itemStyle: {
                       shadowBlur: 10,
@@ -120,67 +188,21 @@
           });
 
         },
-        getDataqianwu() { //获取数据方法
-         var length = 0;
-          var _this = this;
-
-          var params = new URLSearchParams();
-          params.append("year", this.year);
-          this.$axios.post("/queryqinwu.action",params).
-          then(function(result) {
-            _this.mothed.splice(0, _this.mothed.length)
-            _this.price.splice(0, _this.price.length)
-           length = result.data.length
-            if(result.data.length>5){
-              length=5
-            }
-            for(var i=0;i<length;i++){
-              _this.mothed.push(result.data[i].mothen);
-              _this.price.push(result.data[i].price);
-            }
-
-            var myChart = echarts.init(document.getElementById('main'));
-            // 指定图表的配置项和数据
-            let option = {
-              title: {
-                text: "收入前五的月份"
-              },
-              tooltip: {},
-              legend: {
-                data: ["销量"]
-              },
-              xAxis: {
-                data: _this.mothed
-              },
-              yAxis: {},
-              series: [
-                {
-                  name: "营收额",
-                  type: "bar",
-                  data: _this.price
-                }
-              ]
-            };
-            // 使用刚指定的配置项和数据显示图表。
-            myChart.setOption(option);
-          }).
-          catch(function(error) {
-            alert(error)
-          });
-
-        },
-        seleyear(){
+        pagechange(pageindex){  //页码变更时
+          //console.log(pageindex)
+          this.page = pageindex;
+          //根据pageindex  获取数据
           this.getData();
-          this.getDataqianwu();
+
         }
+
       },
       created(){
-        this.getData();
-        this.getDataqianwu();
-
+        this.classify();
+        this.market();
+        this.barmarket();
       }
-
-  }
+    }
 </script>
 
 <style scoped>
