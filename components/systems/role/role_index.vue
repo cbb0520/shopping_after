@@ -133,7 +133,7 @@
             });
           });
         },
-
+//添加
         roleadd(){
           var _this = this;
           if(this.add_rname==''){
@@ -142,22 +142,34 @@
           }
           var params = new URLSearchParams();
           params.append("rname",this.add_rname)
-          this.$axios.post("/addRoLe.action",params)
+          this.$axios.post("/queryRname.action",params)
             /*{params:{name:_this.username,page:_this.pageindex,rows:5}})*/
             .then(function (result) {
+                    if(result.data !=''){
+                      _this.$message.error('错了哦，该角色已经存在');
+                    }else {
+                      _this.$axios.post("/addRoLe.action",params)
+              /*{params:{name:_this.username,page:_this.pageindex,rows:5}})*/
+              .then(function (result) {
 
-              _this.dialogFormadd = false
+                _this.dialogFormadd = false
 
-              _this.$message({
-                showClose: true,
-                message: result.data,
-                type: 'success'
-              });
-              _this.getData();
+                _this.$message({
+                  showClose: true,
+                  message: result.data,
+                  type: 'success'
+                });
+                _this.getData();
+              }).
+            catch(function(error) {
+              alert(error)
+            });}
+
             }).
           catch(function(error) {
             alert(error)
           });
+
         },
 
         bianji(rid){
@@ -181,31 +193,45 @@
             });
         },
         roleupdate(){
+          var _this = this;
           if(this.roelform.rname==''){
             this.$message.error('错了哦，请输入角色');
             return false;
           }
-          this.dialogFormVisible = false
-          var _this = this;
           var params = new URLSearchParams();
           params.append("rid",this.roelform.rid)
           params.append("rname",this.roelform.rname)
-          this.$axios.post("updateRoLe.action", params)
+          this.$axios.post("/queryRname.action",params)
             /*{params:{name:_this.username,page:_this.pageindex,rows:5}})*/
             .then(function (result) {
-              //异步成功，执行then里面的函数
-              //result  结果  很多的响应信息
-              //获取后端传递的json数据  result.data
-              _this.$message({
-                message: result.data,
-                type: 'success'
-              });
-              _this.getData();
-            })
-            .catch(function (error) {
-              //异步如果出现错误  触发catch里面的函数
-              alert(error);
-            });
+              if(result.data !=''){
+                _this.$message.error('错了哦，该角色已经存在');
+              }else {
+                _this.dialogFormVisible = false
+                _this.$axios.post("updateRoLe.action", params)
+                  /*{params:{name:_this.username,page:_this.pageindex,rows:5}})*/
+                  .then(function (result) {
+                    //异步成功，执行then里面的函数
+                    //result  结果  很多的响应信息
+                    //获取后端传递的json数据  result.data
+                    _this.$message({
+                      message: result.data,
+                      type: 'success'
+                    });
+                    _this.getData();
+                  })
+                  .catch(function (error) {
+                    //异步如果出现错误  触发catch里面的函数
+                    alert(error);
+                  });}
+
+            }).
+          catch(function(error) {
+            alert(error)
+          });
+
+
+
         },
         pagechange(pageindex){  //页码变更时
           //console.log(pageindex)
