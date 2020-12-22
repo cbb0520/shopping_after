@@ -30,7 +30,7 @@
       </el-table-column>
       <el-table-column prop="gimgs" label="图片">
         <template slot-scope="scope">
-          <el-image :src="scope.row.gimgs"></el-image>
+          <el-image :src="'./src/assets/'+scope.row.gimgs"></el-image>
         </template>
       </el-table-column>
       <el-table-column prop="limit" label="限购数量">
@@ -65,7 +65,7 @@
 
   export default {
     name: "goods_index",
-    data() {
+    data(){
       return {
         tableData: [],
         classifyData: [],
@@ -101,6 +101,7 @@
         var params = new URLSearchParams();
         params.append("gname", _this.sel_gname);
         params.append("classify", _this.sel_classify);
+        params.append("page", _this.page);
         this.$axios.post("/queryAllGoods.action", params).then(function (result) {
           _this.tableData = result.data.rows;
           _this.total = result.data.total;
@@ -112,7 +113,6 @@
         this.page = pageindex;
         //根据pageindex  获取数据
         this.getData();
-
       },
       goods_bianji(gid) {
         var _this = this;

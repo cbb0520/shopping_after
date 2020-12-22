@@ -12,7 +12,7 @@
       </el-form-item>
 
       <el-form-item label="商品图片" style="text-align: left">
-        <el-image :src="imageUrl" style="height: 120px;width: 130px;border: 1px solid gainsboro">
+        <el-image :src="'./src/assets/'+imageUrl" style="height: 120px;width: 130px;border: 1px solid gainsboro">
         </el-image>
         <input type="file" @change="getFile($event)"
                style="position: absolute;z-index: 99;height: 120px;width: 130px;margin-left: -130px;opacity: 0;cursor: pointer">
@@ -64,7 +64,7 @@
           }
         }).then(function (response) {
           //修改图片直接上传到本地，再显示图片
-          _this.imageUrl = "./src/assets/" + response.data.imgurl;
+          _this.imageUrl = response.data.imgurl;
         }).catch(function (error) {
           console.log("上传失败"+error);
         });
