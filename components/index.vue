@@ -86,6 +86,7 @@
   import Releaserecord_index from "../components/allot/releaserecord/releaserecord_index"
   import Warehouse_index from "./warehouse/warehouse_index"
   import Market from "./statistics/marketing/market"
+  import Purchase from "./purchase/purchase"
 
 
     export default {
@@ -182,6 +183,7 @@
         releaserecord_index:Releaserecord_index,
         warehouse_index: Warehouse_index,
         market:Market,
+        purchase:Purchase,
       },
       created(){
         if(this.$store.getters.getmsg==''){
