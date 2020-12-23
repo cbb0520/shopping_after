@@ -53,6 +53,7 @@
     <el-dialog title="编辑商品" :visible.sync="dialogFormVisible">
       <goodsEdit ref="goodupt"></goodsEdit>
       <div slot="footer" class="dialog-footer" style="padding: 0px">
+        <br>
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" @click="goods_bianjiOk">编辑</el-button>
       </div>
