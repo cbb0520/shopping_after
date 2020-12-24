@@ -13,7 +13,11 @@
       <el-table-column prop="merchants.mname" label="商户名"></el-table-column>
       <el-table-column prop="price" label="价格"></el-table-column>
       <el-table-column prop="buytime" label="购买时间"></el-table-column>
-      <el-table-column prop="mstate" label="状态"></el-table-column>
+      <el-table-column prop="mstate" label="状态">
+        <template scope="scope">
+          <p v-if="scope.row.hstate=='0'">未发货</p>
+        </template>
+      </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button type="info" icon="el-icon-message" circle @click="particulars(scope.row.did)"></el-button>
@@ -51,7 +55,7 @@
           var _this = this;
           var params = new URLSearchParams();
           params.append("page", this.page);
-         /* params.append("user", this.name);*/
+         params.append("user.uname", this.name);
           _this.$axios.post("/queryCountDeliver.action", params).then(function (result) {
             _this.tableData = result.data.rows;
             _this.total = result.data.total;
@@ -82,6 +86,7 @@
           var params = new URLSearchParams();
           params.append("did", val);
           _this.$axios.post("/queryAllDel_goods.action", params).then(function (result) {
+            console.log(result.data)
           _this.$refs.del_goods01.del_goods=result.data;
           }).catch(function (error) {
             alert(error)

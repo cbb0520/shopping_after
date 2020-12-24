@@ -12,14 +12,14 @@
         </el-row>
         <el-table :data="tableData" style="width: 100%">
             <el-table-column prop="mid" label="商户id"></el-table-column>
-            <el-table-column prop="uid" label="用户"></el-table-column>
+            <el-table-column prop="user.uname" label="用户"></el-table-column>
             <el-table-column prop="sname" label="姓名"></el-table-column>
             <el-table-column prop="mddress" label="商户地址"></el-table-column>
             <el-table-column prop="mname" label="商户名"></el-table-column>
             <el-table-column prop="certificate" label="证件号"></el-table-column>
             <el-table-column label="门店图片">
                 <template slot-scope="scope">
-                    　　　　<img :src="scope.row.mimgs" width="40" height="40" class="head_pic"/>
+                    　　　　<img :src="'./src/assets/shanghu/'+scope.row.mimgs" width="40" height="40" class="head_pic"/>
                 </template>
             </el-table-column>
             <el-table-column prop="state" label="状态"></el-table-column>
@@ -77,7 +77,7 @@
                 var _this = this;
                 var params = new URLSearchParams();
                 params.append("page", this.page);
-                /*params.append("mname", this.name);*/
+                params.append("mname", this.name);
                 _this.$axios.post("/queryCountMerchants.action", params).then(function (result) {
                     _this.tableData = result.data.rows;
                     _this.total = result.data.total;
@@ -116,7 +116,7 @@
                         _this.$refs.editmerchant.merchants.sname = result.data.sname;
                         _this.$refs.editmerchant.merchants.mname = result.data.mname;
                         _this.$refs.editmerchant.merchants.certificate = result.data.certificate;
-                        _this.$refs.editmerchant.merchants.mimgs = result.data.mimgs;
+                        _this.$refs.editmerchant.imageUrl = result.data.mimgs;
                         _this.$refs.editmerchant.merchants.phone = result.data.phone;
                         _this.$refs.editmerchant.merchants.mtype = result.data.mtype;
                         var str = result.data.mddress.split("/");

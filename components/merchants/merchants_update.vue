@@ -1,29 +1,30 @@
 <template>
   <div>
     <el-form :mode="merchants" label-width="70px">
-      <el-form-item label="商户id" >
-        <el-input v-model="merchants.mid"></el-input>
+      <el-form-item>
+        <el-input v-model="merchants.mid" style="display: none"></el-input>
       </el-form-item>
-      <el-form-item label="用户id" >
-        <el-input v-model="merchants.uid"></el-input>
+      <el-form-item>
+        <el-input v-model="merchants.uid" style="display: none"></el-input>
       </el-form-item>
-      <el-form-item label="姓名" >
+      <el-form-item label="姓名" prop="sname">
         <el-input v-model="merchants.sname"></el-input>
       </el-form-item>
-      <el-form-item label="商户名" >
+      <el-form-item label="商户名" prop="mname">
         <el-input v-model="merchants.mname"></el-input>
       </el-form-item>
-      <el-form-item label="证件号">
+      <el-form-item label="证件号" prop="certificate">
         <el-input v-model="merchants.certificate"></el-input>
       </el-form-item>
       <el-form-item label="门店照片">
-        <!--<el-input type="file" @change="getFile($event)" v-model="merchants.mimgs"></el-input>-->
-        <input type="file" @change="getFile($event)"></input>
+        <el-image :src="'./src/assets/shanghu/'+imageUrl" style="height: 120px;width: 130px;border: 1px solid gainsboro">
+        </el-image>
+        <input type="file" @change="getFile($event)" style="position: absolute;z-index: 99;height: 120px;width: 130px;margin-left: -130px;opacity: 0;cursor: pointer"></input>
       </el-form-item>
-      <el-form-item label="手机号">
+      <el-form-item label="手机号" prop="phone">
         <el-input v-model="merchants.phone"></el-input>
       </el-form-item>
-      <el-form-item label="门店类型">
+      <el-form-item label="门店类型" prop="mtype">
         <el-select v-model="merchants.mtype" placeholder="请选择门店类型">
           <el-option label="宝妈/团长" value="宝妈/团长"></el-option>
           <el-option label="驿站/快递点" value="驿站/快递点"></el-option>
@@ -39,7 +40,7 @@
           <el-option label="绿植花卉店" value="绿植花卉店"></el-option>
           <el-option label="其他" value="其他"></el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item >
       <el-form-item label="收货地址">
         <select v-model="provincecode" @change="getcity" style="height: 30px;width: 150px">
           <option  v-for="p in sheng"  :value="p.code">{{p.name}}</option>
@@ -51,7 +52,7 @@
           <option  v-for="a in area"  :value="a.code">{{a.name}}</option>
         </select>
       </el-form-item>
-      <el-form-item label="详细地址">
+      <el-form-item label="详细地址" prop="mddress">
         <el-input v-model="merchants.mddress" placeholder="请填写详细的地址"></el-input>
       </el-form-item>
     </el-form>
@@ -81,6 +82,28 @@
             provincecode:"",
             citycode:"",
             areacode:""
+          },
+          imageUrl: '',
+          rules: {
+            sname: [
+              { required: true, message: '请输入姓名', trigger: 'blur' }
+            ],
+            certificate: [
+              { required: true, message: '请输入证件号', trigger: 'blur' }
+            ],
+            mname: [
+              { required: true, message: '请输入商户名', trigger: 'blur' }
+            ],
+            phone: [
+              { required: true, message: '请输入电话', trigger: 'change' },
+              { min: 11, max: 11, message: '输入正确的手机号', trigger: 'blur' },
+            ],
+            mtype: [
+              { required: true, message: '请选择门店类型', trigger: 'blur' }
+            ],
+            mddress: [
+              {required: true, message: '请输入地址', trigger: 'blur' }
+            ]
           }
         }
       },
@@ -171,7 +194,23 @@
         },
         getFile: function (event) {  //文件每次选中，触发此方法  将选中的文件内容填充到addform中的img  后台通过img获取文件内容
           this.merchants.img = event.target.files[0];
-          console.log(this.merchants.img);
+          console.log(this.merchants.img)
+          var _this = this;
+          let formData = new FormData();
+          formData.append("img", event.target.files[0]);
+          this.$axios({
+            method: 'post',
+            url: 'addImage2.action',
+            data: formData,
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }).then(function (response) {
+            //修改图片直接上传到本地，再显示图片
+            _this.imageUrl = response.data.imgurl;
+          }).catch(function (error) {
+            console.log("上传失败"+error);
+          });
         }
       },
       created:function () {

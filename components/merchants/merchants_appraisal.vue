@@ -2,7 +2,7 @@
     <div>
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-input placeholder="请输入商户名" v-model="name">
+          <el-input placeholder="请输入商户姓名" v-model="name">
             <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
           </el-input>
         </el-col>
