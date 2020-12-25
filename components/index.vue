@@ -35,8 +35,8 @@
     </el-header>
     <el-container>
 
-      <el-aside width="200px">
-        <el-menu
+      <el-aside width="250px">
+        <el-menu style="overflow: auto;height: 530px"
           default-active="2"
           class="el-menu-vertical-demo"
           @open="handleOpen"
