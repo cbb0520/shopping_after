@@ -18,15 +18,63 @@
       <el-table-column prop="wid" label="id">
       </el-table-column>
       <el-table-column prop="wname" label="商品名">
+        <template slot-scope="scopes">
+          <el-popover trigger="hover" placement="top">
+            <el-table
+              :data="scopes.row.goods"
+              stripe
+              style="width: 100%">
+              <el-table-column
+                prop="gname"
+                label="商品名"
+                width="150">
+              </el-table-column>
+              <el-table-column
+                prop="gimgs"
+                label="图片"
+                width="150">
+                <template slot-scope="scope">
+                  <el-image :src="'./src/assets/'+scope.row.gimgs" style="width: 100px;height: 60px"></el-image>
+                </template>
+              </el-table-column>
+
+              <el-table-column
+                prop="count"
+                label="数量"
+                width="80">
+              </el-table-column>
+
+              <el-table-column label="仓库"  width="180">>
+                <template slot-scope="scope">
+                  <el-select   placeholder="选择仓库" v-model="scope.row.wid">
+                    <el-option label="选择仓库" value="0"></el-option>
+                    <el-option v-for="cang in cangkuDatas" :label="cang.wname+'/'+cang.classify.fname" :value="cang.wid"></el-option>
+                  </el-select>
+                </template>
+              </el-table-column>
+
+              <el-table-column label="操作"  width="100">>
+                <template slot-scope="scope">
+                  <el-button type="success"  @click="zhuanyi(scope.row.gid,scope.row.wid,scopes.row.wid,scope.row.count)"  round>转移</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+
+
+            <div slot="reference" class="name-wrapper">
+              <el-tag size="medium">{{ scopes.row.wname }}</el-tag>
+            </div>
+          </el-popover>
+        </template>
       </el-table-column>
       <el-table-column prop="classify.fname" label="仓库类型">
       </el-table-column>
       <el-table-column prop="liang" label="仓库容量">
       </el-table-column>
       <el-table-column label="操作">
-        <template slot-scope="scope">
-          <el-button type="primary" @click="warehouse_bianji(scope.row.wid)" icon="el-icon-edit" circle></el-button>
-          <el-button type="danger" @click="warehouse_del(scope.row.wid)" icon="el-icon-delete" circle></el-button>
+        <template slot-scope="scopes">
+          <el-button type="primary" @click="warehouse_bianji(scopes.row.wid)" icon="el-icon-edit" circle></el-button>
+          <el-button type="danger" @click="warehouse_del(scopes.row.wid)" icon="el-icon-delete" circle></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -65,6 +113,7 @@
       return {
         tableData: [],
         sel_wname: '',
+        cangkuDatas:[],
         total: 1,
         page: 1,
         dialogFormVisible: false,
@@ -85,6 +134,35 @@
         }).catch(function (error) {
           alert(error)
         });
+      },
+      getDataCangku() {
+        var _this = this;
+        var params = new URLSearchParams();
+        this.$axios.post("/queryWarehouse.action", params).then(function (result) {
+          _this.cangkuDatas = result.data;
+        }).catch(function (error) {
+          alert(error)
+        });
+      },
+      zhuanyi(gid,noewid,olewid,count){
+        if(noewid==olewid){
+          this.$message.error('警告，该商品已存在该仓库 ！');
+        }else {
+          var _this = this;
+          var params = new URLSearchParams();
+          params.append("gid", gid);
+          params.append("lodwid", olewid);
+          params.append("noewid", noewid);
+          params.append("count", count);
+          this.$axios.post("/zhuanGoods.action", params).then(function (result) {
+            _this.$message({
+              message: result.data,
+              type: 'success'
+            });
+          }).catch(function (error) {
+            alert(error)
+          });
+        }
       },
       warehouse_bianji(wid) {
         var _this = this;
@@ -215,6 +293,7 @@
     },
     created() {
       this.getData();
+      this.getDataCangku();
     }
   }
 </script>
