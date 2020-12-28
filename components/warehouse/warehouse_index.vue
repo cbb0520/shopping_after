@@ -23,6 +23,7 @@
             <el-table
               :data="scopes.row.goods"
               stripe
+              height="300px"
               style="width: 100%">
               <el-table-column
                 prop="gname"
@@ -145,8 +146,18 @@
         });
       },
       zhuanyi(gid,noewid,olewid,count){
-        if(noewid==olewid){
+        var sum = 0;
+        var stu_cangku= this.cangkuDatas.filter(function(item){
+          return item.wid==noewid;
+        });
+        stu_cangku[0].goods.forEach(function(item){
+              sum = sum+item.count
+        });
+        sum = sum+count
+        if(noewid==olewid) {
           this.$message.error('警告，该商品已存在该仓库 ！');
+        }else if(sum> stu_cangku[0].liang){
+          this.$message.error('警告，该仓库容量不足储存该该商品 ！');
         }else {
           var _this = this;
           var params = new URLSearchParams();
