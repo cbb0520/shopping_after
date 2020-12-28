@@ -11,7 +11,8 @@
           </template>
         </el-table-column>
         <el-table-column prop="goods.gname" label="商品名"></el-table-column>
-        <el-table-column prop="goods.price" label="价格"></el-table-column>
+        <el-table-column prop="goods.gprice" label="价格"></el-table-column>
+        <el-table-column prop="dcount" label="数量"></el-table-column>
       </el-table>
     </div>
 </template>

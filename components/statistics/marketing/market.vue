@@ -145,6 +145,7 @@
           var _this = this;
           this.$axios.post("/quryMarketFen.action").
           then(function(result) {
+
             var myChart = echarts.init(document.getElementById('main4'));
             // 指定图表的配置项和数据
             var option = {
