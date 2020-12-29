@@ -27,7 +27,7 @@
         </el-table-column>
         <el-table-column prop="text" label="备注">
           <template scope="scope">
-            <p v-if="scope.row.text==null">无</p>
+            <p v-if="scope.row.text==null||scope.row.text=='' ">无</p>
             <p v-if="scope.row.text!=null">{{scope.row.text}}</p>
           </template>
         </el-table-column>

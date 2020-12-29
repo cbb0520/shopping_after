@@ -55,6 +55,7 @@
           var _this = this;
           var params = new URLSearchParams();
           params.append("page", this.page);
+          params.append("user.uname", this.name);
           _this.$axios.post("/queryCountDeliver.action", params).then(function (result) {
             _this.tableData = result.data.rows;
             _this.total = result.data.total;
