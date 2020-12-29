@@ -37,7 +37,7 @@
       </el-table-column>
       <el-table-column prop="soid" label="已售数量" sortable>
       </el-table-column>
-      <el-table-column prop="price" label="单价" sortable>
+      <el-table-column prop="gprice" label="单价" sortable>
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
@@ -120,16 +120,16 @@
         var params = new URLSearchParams();
         params.append("gid", gid);
         this.$axios.post("/queryGoodsById.action", params).then(function (result) {
-          _this.$refs.goodupt.formGoods.gid = result.data.gid;
-          _this.$refs.goodupt.formGoods.gname = result.data.gname;
+          _this.$refs.goodupt.formGoods.gid = result.data.list.gid;
+          _this.$refs.goodupt.formGoods.gname = result.data.list.gname;
           //点击修改将图片设置成空
           _this.$refs.goodupt.formGoods.gimgs = '';
-          _this.$refs.goodupt.formGoods.limit = result.data.limit;
-          _this.$refs.goodupt.formGoods.price = result.data.price;
+          _this.$refs.goodupt.formGoods.limit = result.data.list.limit;
+          _this.$refs.goodupt.formGoods.gprice = result.data.list.gprice;
           //赋值修改前的商品名
-          _this.oldgname = result.data.gname;
+          _this.oldgname = result.data.list.gname;
           //显示预浏览图片路径
-          _this.$refs.goodupt.imageUrl = result.data.gimgs;
+          _this.$refs.goodupt.imageUrl = result.data.list.gimgs;
         }).catch(function (error) {
           alert(error)
         });
@@ -152,7 +152,7 @@
         formData.append("gid",this.$refs.goodupt.formGoods.gid)
         formData.append("gname",gname)
         formData.append("limit", this.$refs.goodupt.formGoods.limit)
-        formData.append("price", this.$refs.goodupt.formGoods.price)
+        formData.append("gprice", this.$refs.goodupt.formGoods.gprice)
         formData.append("oldgname", this.oldgname)
         this.$axios({
           method: 'post',

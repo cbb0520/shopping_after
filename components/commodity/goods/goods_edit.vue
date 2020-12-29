@@ -23,7 +23,7 @@
       </el-form-item>
 
       <el-form-item label="商品价格" style="float: right">
-        <el-input-number v-model="formGoods.price" :step="0.1" :min=1 style="width: 180px"></el-input-number>
+        <el-input-number v-model="formGoods.gprice" :step="0.1" :min=1 style="width: 180px"></el-input-number>
       </el-form-item>
       <br>
     </el-form>
@@ -42,7 +42,7 @@
           gname: '',
           gimgs: '',
           limit: '',
-          price: ''
+          gprice: ''
         },
         imageUrl: ''
       }
@@ -71,6 +71,5 @@
     }
   }
 </script>
-
 <style scoped>
 </style>
