@@ -51,7 +51,6 @@
       getFile(event) {
         //将文件赋给对象，用于修改
         this.formGoods.gimgs = event.target.files[0];
-
         var _this = this;
         let formData = new FormData();
         formData.append("img", event.target.files[0]);

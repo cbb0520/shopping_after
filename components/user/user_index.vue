@@ -7,8 +7,8 @@
       <el-form-item label="姓名">
         <el-input v-model="userformInline.uname" placeholder="姓名"></el-input>
       </el-form-item>
-      <el-form-item label="电话">
-        <el-input v-model="userformInline.phone" placeholder="电话"></el-input>
+      <el-form-item label="家庭地址">
+        <el-input v-model="userformInline.address" placeholder="家庭地址"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="userchaxuan">查询</el-button>
@@ -50,12 +50,17 @@
         >
       </el-table-column>
       <el-table-column
+        prop="merchants.mddress"
+        label="住址"
+      >
+      </el-table-column>
+      <el-table-column
         prop="address"
         label="住址"
         >
       </el-table-column>
     </el-table>
-    <el-pagination @current-change="userpagechange" layout="prev, pager, next" :total="total" :page-size="3">
+    <el-pagination @current-change="userpagechange" layout="prev, pager, next" :total="total" :page-size="10">
     </el-pagination>
 
   </div>
@@ -73,22 +78,22 @@
           userformInline: {
             uaccount: '',
             uname: '',
-            phone:''
+            address:''
           }
         }
       },
       methods: {
-        usertableRowClassName({row, rowIndex}) {
+        /*usertableRowClassName({row, rowIndex}) {
           if (rowIndex === 1) {
             return 'warning-row';
           } else if (rowIndex === 3) {
             return 'success-row';
           }
           return '';
-        },
+        },*/
         getData() { //获取数据方法
           var _this = this;
-          this.$axios.get("/queryAlluserCount.action",{params:{uaccount:_this.userformInline.uaccount,uname:_this.userformInline.uname,phone:_this.userformInline.phone,page:_this.page}}).
+          this.$axios.get("/queryAlluserCount.action",{params:{uaccount:_this.userformInline.uaccount,uname:_this.userformInline.uname,address:_this.userformInline.address,page:_this.page}}).
           then(function(result) {
             _this.usertableData = result.data.rows;
             _this.total = result.data.total;
@@ -102,6 +107,7 @@
           this.getData();
         },
         userpagechange(pageindex){  //页码变更时
+          alert(pageindex);
           this.page = pageindex;
           //根据pageindex  获取数据
           this.getData();
@@ -110,6 +116,9 @@
       },
       created(){
         this.getData();
+      },
+      components: {
+
       }
     }
 </script>

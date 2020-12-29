@@ -2,7 +2,7 @@
     <div>
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-input placeholder="请输入商户名" v-model="name">
+          <el-input placeholder="请输入商户姓名" v-model="name">
             <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
           </el-input>
         </el-col>
@@ -17,7 +17,10 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-popconfirm title="你确认同意吗？" @confirm="appraisalmerchants(scope.row.mid)">
-              <el-button type="success" icon="el-icon-edit" slot="reference" circle></el-button>
+              <el-button type="success" icon="el-icon-check" slot="reference" circle></el-button>
+            </el-popconfirm>
+            <el-popconfirm title="你确认拒绝吗？" @confirm="refusemerchants(scope.row.mid)">
+              <el-button type="warning" icon="el-icon-star-off" slot="reference" circle></el-button>
             </el-popconfirm>
           </template>
         </el-table-column>
@@ -66,6 +69,26 @@
           catch(function() {
             _this.$message({
               message: '审批失败',
+              type: 'success'
+            });
+          });
+        },
+        refusemerchants(val){
+          var _this = this;
+          var params = new URLSearchParams();
+          params.append("mid", val);
+          _this.$axios.post("/refuseMerchants.action", params).
+          then(function(result) {
+            _this.$message({
+              message: result.data.msg,
+              type: 'success'
+            });
+            //刷新数据
+            _this.getData();
+          }).
+          catch(function() {
+            _this.$message({
+              message: '拒绝失败',
               type: 'success'
             });
           });
