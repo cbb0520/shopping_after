@@ -11,12 +11,27 @@
         <el-input v-model="formGoods.gname"></el-input>
       </el-form-item>
 
+      <el-form-item label="商品详情" style="float: right;position: absolute;z-index: 999;left: 246px;width: 400px">
+        <el-input
+          type="textarea"
+          :rows="5"
+          placeholder="请输入内容"
+          v-model="formGoods.gdetails"
+          maxlength="200"
+          show-word-limit
+          >
+        </el-input>
+
+      </el-form-item>
+
+
       <el-form-item label="商品图片" style="text-align: left">
         <el-image :src="'./src/assets/'+imageUrl" style="height: 120px;width: 130px;border: 1px solid gainsboro">
         </el-image>
         <input type="file" @change="getFile($event)"
                style="position: absolute;z-index: 99;height: 120px;width: 130px;margin-left: -130px;opacity: 0;cursor: pointer">
       </el-form-item>
+
 
       <el-form-item label="限购数量" style="float: left">
         <el-input-number v-model="formGoods.limit" :min=1 style="width: 180px"></el-input-number>
@@ -25,6 +40,7 @@
       <el-form-item label="商品价格" style="float: right">
         <el-input-number v-model="formGoods.gprice" :step="0.1" :min=1 style="width: 180px"></el-input-number>
       </el-form-item>
+
       <br>
     </el-form>
 
@@ -42,6 +58,8 @@
           gname: '',
           gimgs: '',
           limit: '',
+          price: '',
+          gdetails:'',
           gprice: ''
         },
         imageUrl: ''

@@ -126,6 +126,7 @@
           _this.$refs.goodupt.formGoods.gimgs = '';
           _this.$refs.goodupt.formGoods.limit = result.data.list.limit;
           _this.$refs.goodupt.formGoods.gprice = result.data.list.gprice;
+          _this.$refs.goodupt.formGoods.gdetails = result.data.list.gdetails;
           //赋值修改前的商品名
           _this.oldgname = result.data.list.gname;
           //显示预浏览图片路径
@@ -153,6 +154,7 @@
         formData.append("gname",gname)
         formData.append("limit", this.$refs.goodupt.formGoods.limit)
         formData.append("gprice", this.$refs.goodupt.formGoods.gprice)
+        formData.append("gdetails", this.$refs.goodupt.formGoods.gdetails)
         formData.append("oldgname", this.oldgname)
         this.$axios({
           method: 'post',

@@ -17,7 +17,7 @@
         <el-input v-model="merchants.certificate"></el-input>
       </el-form-item>
       <el-form-item label="门店照片">
-        <el-image :src="'./src/assets/shanghu/'+imageUrl" style="height: 120px;width: 130px;border: 1px solid gainsboro">
+        <el-image  :src="'./src/assets/shanghu/'+imageUrl" style="height: 120px;width: 130px;border: 1px solid gainsboro">
         </el-image>
         <input type="file" @change="getFile($event)" style="position: absolute;z-index: 99;height: 120px;width: 130px;margin-left: -130px;opacity: 0;cursor: pointer"></input>
       </el-form-item>
